@@ -3,6 +3,7 @@ services:
   db_postgres:
     container_name: db_prod_postgres
     image: postgres:9.6.6-alpine
+    restart: always
     volumes:
       - 'vol_data_podtgres:/var/lib/postgresql/data'
     environment:
@@ -11,11 +12,13 @@ services:
       - POSTGRES_PASSWORD=pass1
   app_netflix:
     container_name: app_netflix
+    restart: always
     image: com.at/netflix
     ports:
       - 8080:8080
     depends_on:
       - db_postgres
+      - redis_server
     environment:
       - DATABASE_HOST=db_postgres
       - DATABASE_PORT=5432
@@ -25,11 +28,16 @@ services:
   redis_server:
     container_name: redis_container
     image: redis
+    restart: always
     volumes:
       - 'redis_vol:/data'
     ports:
       - 6379:6379
     entrypoint: redis-server --appendonly yes
+    environment:
+      - REDIS_HOST=redis_server
+      - REDIS_PORT=6379
+      - REDIS_PASS=
 volumes:
   vol_data_podtgres:
   redis_vol:
