@@ -2,13 +2,13 @@ version: '3'
 services:
   db_postgres:
     container_name: db_prod_postgres
-    image: postgres:9.6.6-alpine
+    image: postgres:11.1-alpine
     volumes:
       - 'vol_data_podtgres:/var/lib/postgresql/data'
     environment:
-      - POSTGRES_DB=dbprod
-      - POSTGRES_USER=user1
-      - POSTGRES_PASSWORD=pass1
+      - POSTGRES_DB=db_prod
+      - POSTGRES_USER=user_prod
+      - POSTGRES_PASSWORD=pass_prod
   app_netflix:
     container_name: app_netflix
     image: com.at/netflix
@@ -16,12 +16,13 @@ services:
       - 8080:8080
     depends_on:
       - db_postgres
+      - redis_server
     environment:
       - DATABASE_HOST=db_postgres
       - DATABASE_PORT=5432
-      - DATABASE_DB=dbprod
-      - DATABASE_USER=user1
-      - DATABASE_PASSWORD=pass1
+      - DATABASE_DB=db_prod
+      - DATABASE_USER=user_prod
+      - DATABASE_PASSWORD=pass_prod
   redis_server:
     container_name: redis_container
     image: redis
