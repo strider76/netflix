@@ -1,8 +1,9 @@
 spring:
+  profile: local
   datasource:
-    url: jdbc:postgresql://localhost:6000/db1
-    username: user1
-    password: pass1
+    url: jdbc:postgresql://localhost:6000/db_local
+    username: user_local
+    password: pass_local
   jpa:
     hibernate:
       ddl-auto: create-drop
